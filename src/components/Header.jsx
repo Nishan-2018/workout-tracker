@@ -9,7 +9,7 @@ export default function Header() {
                 WebkitTextFillColor: 'transparent',
                 marginBottom: '0.5rem'
             }}>
-                IronTrack
+                IronTrack <span style={{ fontSize: '1rem', verticalAlign: 'middle', background: '#f59e0b', color: 'white', padding: '2px 8px', borderRadius: '4px', marginLeft: '10px' }}>BETA</span>
             </h1>
             <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem' }}>
                 Your daily workout companion.

@@ -1,8 +1,14 @@
 import { useState, useEffect } from 'react';
+import { getExercisePRs } from '../utils/storage';
 
 export default function ExerciseForm({ onAddExercise, initialExercise = null, onCancel }) {
     const [name, setName] = useState('');
     const [sets, setSets] = useState([
+        { reps: '', weight: '' },
+        { reps: '', weight: '' },
+        { reps: '', weight: '' }
+    ]);
+    const [prs, setPrs] = useState([
         { reps: '', weight: '' },
         { reps: '', weight: '' },
         { reps: '', weight: '' }
@@ -16,6 +22,19 @@ export default function ExerciseForm({ onAddExercise, initialExercise = null, on
             }
         }
     }, [initialExercise]);
+
+    useEffect(() => {
+        if (name) {
+            const historicalBest = getExercisePRs(name);
+            setPrs(historicalBest);
+        } else {
+            setPrs([
+                { reps: '', weight: '' },
+                { reps: '', weight: '' },
+                { reps: '', weight: '' }
+            ]);
+        }
+    }, [name]);
 
     const handleSetChange = (index, field, value) => {
         const newSets = [...sets];
@@ -81,7 +100,7 @@ export default function ExerciseForm({ onAddExercise, initialExercise = null, on
                             <div style={{ flex: 1 }}>
                                 <input
                                     type="number"
-                                    placeholder="Reps"
+                                    placeholder={prs[i].reps ? `Best: ${prs[i].reps}` : "Reps"}
                                     value={set.reps}
                                     onChange={(e) => handleSetChange(i, 'reps', e.target.value)}
                                     style={{ padding: '0.5rem', width: '100%' }}
@@ -90,7 +109,7 @@ export default function ExerciseForm({ onAddExercise, initialExercise = null, on
                             <div style={{ flex: 1 }}>
                                 <input
                                     type="number"
-                                    placeholder="Weight (kg)"
+                                    placeholder={prs[i].weight ? `Best: ${prs[i].weight}` : "Weight (kg)"}
                                     value={set.weight}
                                     onChange={(e) => handleSetChange(i, 'weight', e.target.value)}
                                     style={{ padding: '0.5rem', width: '100%' }}

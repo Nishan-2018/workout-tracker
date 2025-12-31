@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "workout-tracking-39e60"
+  },
+  "targets": {
+    "workout-tracking-39e60": {
+      "hosting": {
+        "stable": [
+          "workout-tracking-39e60"
+        ],
+        "beta": [
+          "workout-tracking-39e60-beta"
+        ]
+      }
+    }
   }
 }
