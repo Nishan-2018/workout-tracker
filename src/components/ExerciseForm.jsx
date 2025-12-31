@@ -23,6 +23,16 @@ export default function ExerciseForm({ onAddExercise, initialExercise = null, on
         setSets(newSets);
     };
 
+    const addSet = () => {
+        setSets([...sets, { reps: '', weight: '' }]);
+    };
+
+    const removeSet = (index) => {
+        if (sets.length <= 1) return;
+        const newSets = sets.filter((_, i) => i !== index);
+        setSets(newSets);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!name) return;
@@ -66,15 +76,15 @@ export default function ExerciseForm({ onAddExercise, initialExercise = null, on
 
                 <div style={{ display: 'grid', gap: '1rem' }}>
                     {sets.map((set, i) => (
-                        <div key={i} style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                            <span style={{ color: 'var(--text-secondary)', width: '50px', fontWeight: '600' }}>Set {i + 1}</span>
+                        <div key={i} style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                            <span style={{ color: 'var(--text-secondary)', width: '45px', fontWeight: '600', fontSize: '0.85rem' }}>Set {i + 1}</span>
                             <div style={{ flex: 1 }}>
                                 <input
                                     type="number"
                                     placeholder="Reps"
                                     value={set.reps}
                                     onChange={(e) => handleSetChange(i, 'reps', e.target.value)}
-                                    style={{ padding: '0.5rem' }}
+                                    style={{ padding: '0.5rem', width: '100%' }}
                                 />
                             </div>
                             <div style={{ flex: 1 }}>
@@ -83,11 +93,43 @@ export default function ExerciseForm({ onAddExercise, initialExercise = null, on
                                     placeholder="Weight (kg)"
                                     value={set.weight}
                                     onChange={(e) => handleSetChange(i, 'weight', e.target.value)}
-                                    style={{ padding: '0.5rem' }}
+                                    style={{ padding: '0.5rem', width: '100%' }}
                                 />
                             </div>
+                            <button 
+                                type="button" 
+                                onClick={() => removeSet(i)}
+                                style={{ 
+                                    background: 'transparent', 
+                                    color: '#ef4444', 
+                                    border: 'none', 
+                                    cursor: 'pointer',
+                                    padding: '0.5rem',
+                                    fontSize: '1.2rem',
+                                    display: sets.length > 1 ? 'block' : 'none'
+                                }}
+                                title="Remove Set"
+                            >
+                                ✕
+                            </button>
                         </div>
                     ))}
+                    <button 
+                        type="button" 
+                        onClick={addSet}
+                        className="btn-secondary"
+                        style={{ 
+                            marginTop: '0.5rem', 
+                            padding: '0.4rem', 
+                            fontSize: '0.85rem', 
+                            background: 'var(--surface-color)', 
+                            border: '1px dashed var(--primary-color)',
+                            width: '100%',
+                            color: 'var(--primary-color)'
+                        }}
+                    >
+                        + Add Set
+                    </button>
                 </div>
 
                 <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>

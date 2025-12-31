@@ -1,4 +1,4 @@
-export default function SessionHistory({ sessions }) {
+export default function SessionHistory({ sessions, onDeleteSession, onEditSession }) {
     if (sessions.length === 0) return null;
 
     return (
@@ -14,15 +14,30 @@ export default function SessionHistory({ sessions }) {
                                     {new Date(session.date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                                 </div>
                             </div>
+                            <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                <button
+                                    onClick={() => onEditSession(session)}
+                                    style={{ background: 'var(--surface-color)', color: 'white', padding: '0.25rem 0.75rem', borderRadius: '4px', fontSize: '0.8rem', border: '1px solid var(--border-color)' }}
+                                >
+                                    Edit
+                                </button>
+                                <button
+                                    onClick={() => onDeleteSession(session.id)}
+                                    style={{ background: 'transparent', color: '#ef4444', border: 'none', cursor: 'pointer', padding: '0.25rem' }}
+                                    title="Delete Session"
+                                >
+                                    ✕
+                                </button>
+                            </div>
                         </div>
 
                         <div style={{ display: 'grid', gap: '0.75rem' }}>
                             {session.exercises.map(ex => (
                                 <div key={ex.id} style={{ background: 'rgba(0,0,0,0.2)', padding: '0.75rem', borderRadius: '8px' }}>
                                     <div style={{ fontWeight: '600', marginBottom: '0.5rem' }}>{ex.name}</div>
-                                    <div style={{ display: 'flex', gap: '1rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                                    <div style={{ display: 'flex', gap: '1rem', fontSize: '0.9rem', color: 'var(--text-secondary)', flexWrap: 'wrap' }}>
                                         {ex.sets.map((s, i) => (
-                                            <span key={i}>
+                                            <span key={i} style={{ background: 'rgba(255,255,255,0.05)', padding: '2px 6px', borderRadius: '4px' }}>
                                                 S{i + 1}: <strong style={{ color: 'var(--text-primary)' }}>{s.reps || 0}</strong> x <strong style={{ color: 'var(--text-primary)' }}>{s.weight || 0}kg</strong>
                                             </span>
                                         ))}

@@ -1,0 +1,261 @@
+[
+    {
+        "id": "chest",
+        "name": "Chest Workout",
+        "description": "Build a strong and broad chest with these fundamental exercises.",
+        "exercises": [
+            {
+                "name": "Push-ups",
+                "details": "3 sets of 10-15 reps. Keep your core tight."
+            },
+            {
+                "name": "Bench Press",
+                "details": "3 sets of 8-10 reps. Focus on controlled movement."
+            },
+            {
+                "name": "Incline Dumbbell Press",
+                "details": "3 sets of 10 reps. Targets the upper chest."
+            },
+            {
+                "name": "Chest Flys",
+                "details": "3 sets of 12 reps. Feel the stretch."
+            },
+            {
+                "name": "Dips",
+                "details": "3 sets to failure. Great for lower chest and triceps."
+            }
+        ]
+    },
+    {
+        "id": "legs",
+        "name": "Leg Exercise",
+        "description": "Develop leg strength and stability with these essential moves.",
+        "exercises": [
+            {
+                "name": "Bodyweight Squats",
+                "details": "3 sets of 20 reps. Keep your back straight."
+            },
+            {
+                "name": "Lunges",
+                "details": "3 sets of 12 reps per leg. Step wide for balance."
+            },
+            {
+                "name": "Leg Press",
+                "details": "3 sets of 10-12 reps. Don't lock your knees."
+            },
+            {
+                "name": "Calf Raises",
+                "details": "4 sets of 15 reps. Go slow for max burn."
+            },
+            {
+                "name": "Leg Curls",
+                "details": "3 sets of 12 reps. Targets the hamstrings."
+            }
+        ]
+    },
+    {
+        "id": "biceps",
+        "name": "Biceps",
+        "description": "Classic arm building exercises for peak shape.",
+        "exercises": [
+            {
+                "name": "Barbell Curls",
+                "details": "3 sets of 10 reps. No swinging!"
+            },
+            {
+                "name": "Hammer Curls",
+                "details": "3 sets of 12 reps. Targets the brachialis."
+            },
+            {
+                "name": "Preacher Curls",
+                "details": "3 sets of 10 reps. Isolates the biceps."
+            },
+            {
+                "name": "Concentration Curls",
+                "details": "3 sets of 12 reps each arm."
+            },
+            {
+                "name": "Chin-ups",
+                "details": "3 sets to failure. Great compound move."
+            }
+        ]
+    },
+    {
+        "id": "core",
+        "name": "Core Muscles",
+        "description": "Strengthen your midsection for better overall performance.",
+        "exercises": [
+            {
+                "name": "Plank",
+                "details": "3 sets of 45-60 seconds. Stay flat like a board."
+            },
+            {
+                "name": "Crunches",
+                "details": "3 sets of 20 reps. Focus on the squeeze."
+            },
+            {
+                "name": "Leg Raises",
+                "details": "3 sets of 15 reps. Keep legs straight if possible."
+            },
+            {
+                "name": "Russian Twists",
+                "details": "3 sets of 20 reps total. Use a weight for challenge."
+            },
+            {
+                "name": "Mountain Climbers",
+                "details": "3 sets of 30 seconds. Elevated heart rate."
+            }
+        ]
+    },
+    {
+        "id": "back",
+        "name": "Back Workout",
+        "description": "Build a powerful V-taper and improve posture with these back-focused movements.",
+        "exercises": [
+            {
+                "name": "Pull-ups",
+                "details": "3 sets to failure. Focus on pulling with your elbows, not just your hands."
+            },
+            {
+                "name": "Bent-Over Rows",
+                "details": "3 sets of 8-10 reps. Keep your back flat and pull the bar to your belly button."
+            },
+            {
+                "name": "Lat Pulldowns",
+                "details": "3 sets of 10-12 reps. Squeeze your shoulder blades together at the bottom."
+            },
+            {
+                "name": "Single-Arm Dumbbell Rows",
+                "details": "3 sets of 10 reps per side. Ensures balanced strength on both sides."
+            },
+            {
+                "name": "Deadlifts",
+                "details": "3 sets of 5-8 reps. The ultimate full-back and posterior chain builder."
+            }
+        ]
+    },
+    {
+        "id": "forearms",
+        "name": "Forearms",
+        "description": "Improve grip strength and forearm size.",
+        "exercises": [
+            {
+                "name": "Wrist Curls",
+                "details": "3 sets of 15 reps. Palms facing up."
+            },
+            {
+                "name": "Reverse Wrist Curls",
+                "details": "3 sets of 15 reps. Palms facing down."
+            },
+            {
+                "name": "Farmer's Walk",
+                "details": "3 sets of 40 meters. Carry heavy dumbbells."
+            },
+            {
+                "name": "Wrist Rollers",
+                "details": "3 sets up and down. Incredible pump."
+            },
+            {
+                "name": "Dead Hangs",
+                "details": "3 sets of 30-45 seconds. Just hang from a bar."
+            }
+        ]
+    },
+    {
+        "id": "neck",
+        "name": "Neck",
+        "description": "Essential for athletes and posture correction.",
+        "exercises": [
+            {
+                "name": "Neck Isometrics",
+                "details": "3 sets of 10 seconds. Push against your hand."
+            },
+            {
+                "name": "Lying Neck Retraction",
+                "details": "3 sets of 15 reps. Tuck your chin."
+            },
+            {
+                "name": "Fron/Back Neck Extensions",
+                "details": "3 sets of 12 reps. Use weight if advanced."
+            },
+            {
+                "name": "Shoulder Shrugs",
+                "details": "4 sets of 12 reps. Targets the traps/neck."
+            }
+        ]
+    },
+    {
+        "id": "glutes",
+        "name": "Glutes",
+        "description": "Build power and shape in your posterior chain.",
+        "exercises": [
+            {
+                "name": "Glute Bridges",
+                "details": "3 sets of 20 reps. Squeeze at the top."
+            },
+            {
+                "name": "Hip Thrusts",
+                "details": "3 sets of 12 reps. The king of glute moves."
+            },
+            {
+                "name": "Cable Kickbacks",
+                "details": "3 sets of 15 reps each leg."
+            },
+            {
+                "name": "Clamshells",
+                "details": "3 sets of 20 reps each side."
+            },
+            {
+                "name": "Abductor Machine",
+                "details": "3 sets of 12 reps. Good for side glute."
+            }
+        ]
+    },
+    {
+        "id": "stretching",
+        "name": "Full Body Stretching",
+        "description": "Improve flexibility and aid recovery by stretching every major muscle group.",
+        "exercises": [
+            {
+                "name": "Cobra Stretch",
+                "details": "Hold for 30 seconds. Targets the abdominals and lower back."
+            },
+            {
+                "name": "Child's Pose",
+                "details": "Hold for 45 seconds. Great for relaxing the spine and shoulders."
+            },
+            {
+                "name": "Hamstring Reach",
+                "details": "Hold for 30 seconds per leg. Reach for your toes while keeping legs straight."
+            },
+            {
+                "name": "Quad Stretch",
+                "details": "Hold for 30 seconds per side. Stand on one leg and pull your heel to your glute."
+            },
+            {
+                "name": "Cross-Body Shoulder Stretch",
+                "details": "Hold for 30 seconds per arm. Pull one arm across your chest."
+            },
+            {
+                "name": "Triceps Stretch",
+                "details": "Hold for 20 seconds per arm. Reach your hand down the center of your back."
+            },
+            {
+                "name": "Butterfly Stretch",
+                "details": "Hold for 45 seconds. Targets the inner thighs and groin."
+            },
+            {
+                "name": "Cat-Cow Stretch",
+                "details": "10 slow repetitions. Improves mobility in the neck and entire spine."
+            },
+            {
+                "name": "Pigeon Pose",
+                "details": "Hold for 30 seconds per side. Deep stretch for the hips and glutes."
+            },
+            {
+                "name": "Neck Circles",
+                "details": "5 circles per direction. Releases tension in the upper traps and neck."
+            }
+        ]
+    }
+]

@@ -105,6 +105,23 @@ export const saveSession = (session, userId = null) => {
   }
 };
 
+export const deleteSession = (id, userId = null) => {
+  try {
+    const sessions = getSessions();
+    const newSessions = sessions.filter(s => s.id !== id);
+    localStorage.setItem(LOCAL_SESSIONS_KEY, JSON.stringify(newSessions));
+
+    if (userId) {
+      const templates = getTemplates();
+      saveUserData(userId, newSessions, templates);
+    }
+
+    return newSessions;
+  } catch (error) {
+    console.error("Error deleting session", error);
+    return [];
+  }
+};
 
 export const createSession = (name, templateExercises = []) => {
   const exercises = templateExercises.map(name => ({
@@ -166,4 +183,119 @@ export const deleteTemplate = (id, userId = null) => {
   }
 
   return newTemplates;
+};
+
+// --- Workout Streak Functions ---
+export const getWorkoutStreak = () => {
+  const sessions = getSessions();
+
+  if (sessions.length === 0) {
+    return {
+      currentStreak: 0,
+      longestStreak: 0,
+      totalWorkouts: 0
+    };
+  }
+
+  // Get unique workout dates (one workout per day counts)
+  const uniqueDates = [...new Set(sessions.map(s => new Date(s.date).toISOString().split('T')[0]))]
+    .sort((a, b) => new Date(b) - new Date(a)); // Sort newest first
+
+  // Calculate current streak
+  let currentStreak = 0;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  // Check if there's a workout today or yesterday to start the streak
+  const latestWorkout = new Date(uniqueDates[0]);
+  latestWorkout.setHours(0, 0, 0, 0);
+
+  if (latestWorkout.getTime() === today.getTime() || latestWorkout.getTime() === yesterday.getTime()) {
+    currentStreak = 1;
+    let checkDate = new Date(latestWorkout);
+
+    for (let i = 1; i < uniqueDates.length; i++) {
+      const prevDate = new Date(uniqueDates[i]);
+      prevDate.setHours(0, 0, 0, 0);
+
+      const expectedDate = new Date(checkDate);
+      expectedDate.setDate(expectedDate.getDate() - 1);
+
+      if (prevDate.getTime() === expectedDate.getTime()) {
+        currentStreak++;
+        checkDate = prevDate;
+      } else {
+        break;
+      }
+    }
+  }
+
+  // Calculate longest streak
+  let longestStreak = 0;
+  let tempStreak = 1;
+
+  for (let i = 0; i < uniqueDates.length - 1; i++) {
+    const currentDate = new Date(uniqueDates[i]);
+    const nextDate = new Date(uniqueDates[i + 1]);
+
+    const diffTime = currentDate - nextDate;
+    const diffDays = diffTime / (1000 * 60 * 60 * 24);
+
+    if (diffDays === 1) {
+      tempStreak++;
+    } else {
+      longestStreak = Math.max(longestStreak, tempStreak);
+      tempStreak = 1;
+    }
+  }
+  longestStreak = Math.max(longestStreak, tempStreak);
+
+  return {
+    currentStreak,
+    longestStreak,
+    totalWorkouts: sessions.length
+  };
+};
+
+const getIntensityLevel = (count) => {
+  if (count === 0) return 0;
+  if (count <= 1) return 1;
+  if (count <= 2) return 2;
+  if (count <= 3) return 3;
+  return 4;
+};
+
+export const getWorkoutHeatmapData = (days = 365) => {
+  const sessions = getSessions();
+  const heatmapData = [];
+
+  // Create a map of date -> workout count
+  const workoutCountByDate = {};
+  sessions.forEach(s => {
+    const dateStr = new Date(s.date).toISOString().split('T')[0];
+    workoutCountByDate[dateStr] = (workoutCountByDate[dateStr] || 0) + 1;
+  });
+
+  // Generate array of last N days with workout counts
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - days + 1);
+
+  for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+    const dateStr = d.toISOString().split('T')[0];
+    const count = workoutCountByDate[dateStr] || 0;
+
+    heatmapData.push({
+      date: dateStr,
+      count: count,
+      level: getIntensityLevel(count),
+      day: d.getDay(), // 0 = Sunday, 6 = Saturday
+      workouts: sessions.filter(s => new Date(s.date).toISOString().split('T')[0] === dateStr)
+    });
+  }
+
+  return heatmapData;
 };
