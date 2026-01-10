@@ -5,7 +5,7 @@ import SessionHistory from './components/SessionHistory';
 import {
   getSessions, saveSession, createSession,
   getTemplates, saveTemplate, deleteTemplate,
-  fetchUserData
+  fetchUserData, initializeDefaults
 } from './utils/storage';
 import { auth, signInWithGoogle, logout } from './utils/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -25,6 +25,9 @@ function App() {
   const [showAddForm, setShowAddForm] = useState(false);
 
   useEffect(() => {
+    // Seed defaults if fresh visit
+    initializeDefaults();
+
     // Auth Listener
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);

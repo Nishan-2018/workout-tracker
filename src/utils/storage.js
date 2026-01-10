@@ -165,6 +165,15 @@ export const getTemplates = () => {
   }
 };
 
+export const initializeDefaults = () => {
+  const templates = getTemplates();
+  if (templates.length === 0) {
+    localStorage.setItem(LOCAL_TEMPLATES_KEY, JSON.stringify(DEFAULT_TEMPLATES));
+    return DEFAULT_TEMPLATES;
+  }
+  return templates;
+};
+
 export const saveTemplate = (name, exerciseNames, userId = null) => {
   try {
     const templates = getTemplates();
