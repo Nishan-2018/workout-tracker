@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import ExerciseForm from './components/ExerciseForm';
 import SessionHistory from './components/SessionHistory';
+import StatsDashboard from './components/StatsDashboard';
 import {
   getSessions, saveSession, createSession,
   getTemplates, saveTemplate, deleteTemplate,
@@ -163,69 +164,74 @@ function App() {
       <main style={{ maxWidth: '800px', margin: '0 auto' }}>
 
         {!currentSession ? (
-          <div className="glass-panel fade-in" style={{ padding: '3rem', textAlign: 'center' }}>
-            <h2 style={{ marginBottom: '1.5rem' }}>Start New Workout</h2>
-            <form onSubmit={startSession} style={{ maxWidth: '400px', margin: '0 auto', textAlign: 'left' }}>
+          <div className="fade-in">
+            <div className="glass-panel" style={{ padding: '3rem', textAlign: 'center', marginBottom: '2rem' }}>
+              <h2 style={{ marginBottom: '1.5rem' }}>Start New Workout</h2>
+              <form onSubmit={startSession} style={{ maxWidth: '400px', margin: '0 auto', textAlign: 'left' }}>
 
-              <div style={{ marginBottom: '1.5rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)' }}>
-                  1. Choose a Template
-                </label>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                  <button
-                    type="button"
-                    onClick={() => { setSelectedTemplate(''); setNewSessionName(''); }}
-                    style={{
-                      padding: '0.5rem 1rem',
-                      borderRadius: '20px',
-                      background: selectedTemplate === '' ? 'var(--primary-color)' : 'var(--surface-color)',
-                      border: '1px solid var(--border-color)',
-                      color: 'white'
-                    }}
-                  >
-                    Empty
-                  </button>
-                  {templates.map(t => (
-                    <div key={t.id} style={{ position: 'relative' }}>
-                      <button
-                        type="button"
-                        onClick={() => { setSelectedTemplate(t.id); setNewSessionName(t.name); }}
-                        style={{
-                          padding: '0.5rem 1rem',
-                          borderRadius: '20px',
-                          background: selectedTemplate === t.id ? 'var(--primary-color)' : 'var(--surface-color)',
-                          border: '1px solid var(--border-color)',
-                          color: 'white',
-                          paddingRight: '2.5rem'
-                        }}
-                      >
-                        {t.name}
-                      </button>
-                      <span
-                        onClick={(e) => { e.stopPropagation(); handleDeleteTemplate(t.id); }}
-                        style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer', color: 'rgba(255,255,255,0.5)', fontSize: '0.8rem' }}
-                      >✕</span>
-                    </div>
-                  ))}
+                <div style={{ marginBottom: '1.5rem' }}>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)' }}>
+                    1. Choose a Template
+                  </label>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                    <button
+                      type="button"
+                      onClick={() => { setSelectedTemplate(''); setNewSessionName(''); }}
+                      style={{
+                        padding: '0.5rem 1rem',
+                        borderRadius: '20px',
+                        background: selectedTemplate === '' ? 'var(--primary-color)' : 'var(--surface-color)',
+                        border: '1px solid var(--border-color)',
+                        color: 'white'
+                      }}
+                    >
+                      Empty
+                    </button>
+                    {templates.map(t => (
+                      <div key={t.id} style={{ position: 'relative' }}>
+                        <button
+                          type="button"
+                          onClick={() => { setSelectedTemplate(t.id); setNewSessionName(t.name); }}
+                          style={{
+                            padding: '0.5rem 1rem',
+                            borderRadius: '20px',
+                            background: selectedTemplate === t.id ? 'var(--primary-color)' : 'var(--surface-color)',
+                            border: '1px solid var(--border-color)',
+                            color: 'white',
+                            paddingRight: '2.5rem'
+                          }}
+                        >
+                          {t.name}
+                        </button>
+                        <span
+                          onClick={(e) => { e.stopPropagation(); handleDeleteTemplate(t.id); }}
+                          style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer', color: 'rgba(255,255,255,0.5)', fontSize: '0.8rem' }}
+                        >✕</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              <div style={{ marginBottom: '2rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)' }}>
-                  2. Session Name
-                </label>
-                <input
-                  value={newSessionName}
-                  onChange={e => setNewSessionName(e.target.value)}
-                  placeholder="e.g. Push Day"
-                  required
-                />
-              </div>
+                <div style={{ marginBottom: '2rem' }}>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)' }}>
+                    2. Session Name
+                  </label>
+                  <input
+                    value={newSessionName}
+                    onChange={e => setNewSessionName(e.target.value)}
+                    placeholder="e.g. Push Day"
+                    required
+                  />
+                </div>
 
-              <button type="submit" className="btn-primary" style={{ width: '100%', fontSize: '1.1rem' }}>
-                Start Workout
-              </button>
-            </form>
+                <button type="submit" className="btn-primary" style={{ width: '100%', fontSize: '1.1rem' }}>
+                  Start Workout
+                </button>
+              </form>
+            </div>
+
+            <StatsDashboard sessions={sessions} />
+
           </div>
         ) : (
           <div className="fade-in">
