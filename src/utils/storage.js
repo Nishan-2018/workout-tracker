@@ -5,6 +5,24 @@ const LOCAL_SESSIONS_KEY = 'gym_tracker_sessions';
 const LOCAL_TEMPLATES_KEY = 'gym_tracker_templates';
 
 // --- Helper for Syncing ---
+const DEFAULT_TEMPLATES = [
+  {
+    id: 'beginner-full-body',
+    name: 'Beginner Full Body',
+    exercises: ['Squat', 'Push Up', 'Dumbbell Row', 'Plank']
+  },
+  {
+    id: 'beginner-upper',
+    name: 'Beginner Upper Body',
+    exercises: ['Bench Press', 'Lat Pulldown', 'Overhead Press', 'Bicep Curl', 'Tricep Extension']
+  },
+  {
+    id: 'beginner-lower',
+    name: 'Beginner Lower Body',
+    exercises: ['Goblet Squat', 'Romanian Deadlift', 'Lunges', 'Calf Raises']
+  }
+];
+
 // --- Helper for Syncing ---
 export const fetchUserData = async (userId) => {
   try {
@@ -47,6 +65,20 @@ export const fetchUserData = async (userId) => {
       }
 
       return { sessions: mergedSessions, templates: mergedTemplates };
+    } else {
+      // Doc doesn't exist -> New User (or wiped data)
+      // Check if we have local data to seed from
+      let localTemplates = getTemplates();
+      let localSessions = getSessions();
+
+      // If ABSOLUTELY NO data (new user, fresh device), insert Defaults
+      if (localTemplates.length === 0 && localSessions.length === 0) {
+        localTemplates = DEFAULT_TEMPLATES;
+        localStorage.setItem(LOCAL_TEMPLATES_KEY, JSON.stringify(localTemplates));
+        // Save to cloud immediately so they have it next time
+        saveUserData(userId, [], localTemplates);
+      }
+      return { sessions: localSessions, templates: localTemplates };
     }
   } catch (e) {
     console.error("Error fetching cloud data", e);
@@ -169,24 +201,25 @@ export const deleteTemplate = (id, userId = null) => {
 };
 
 /**
- * Finds the max weight/reps for each set index (0, 1, 2) for a given exercise name.
+ * Finds the max weight/reps for each set index (0, 1, 2...) for a given exercise name.
  * returns an array like [{reps: 10, weight: 60}, {reps: 8, weight: 65}, {reps: 6, weight: 70}]
  */
 export const getExercisePRs = (exerciseName) => {
   const sessions = getSessions();
-  const prs = [
-    { reps: '', weight: '' },
-    { reps: '', weight: '' },
-    { reps: '', weight: '' }
-  ];
+  const prs = []; // Dynamic array
 
-  if (!exerciseName) return prs;
+  if (!exerciseName) return [];
 
   sessions.forEach(session => {
     session.exercises.forEach(ex => {
       if (ex.name.toLowerCase() === exerciseName.toLowerCase() && ex.isCompleted) {
         ex.sets.forEach((set, i) => {
-          if (i < 3 && set.weight) {
+          // Expand PRs array if needed
+          while (prs.length <= i) {
+            prs.push({ reps: '', weight: '' });
+          }
+
+          if (set.weight) {
             const currentWeight = parseFloat(set.weight);
             const bestWeight = prs[i].weight ? parseFloat(prs[i].weight) : 0;
 
