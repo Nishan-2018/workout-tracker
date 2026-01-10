@@ -1,48 +1,92 @@
 export const EXERCISE_Categories = {
-    // Push (Chest/Triceps/Shoulders)
+    // Chest
     'bench press': 'Chest',
+    'incline press': 'Chest',
+    'decline press': 'Chest',
+    'chest press': 'Chest',
     'push up': 'Chest',
-    'incline bench': 'Chest',
     'chest fly': 'Chest',
+    'pec deck': 'Chest',
+    'pullover': 'Chest',
+    'cable crossover': 'Chest',
+    'dip': 'Chest', // Weighted dips often chest focused, or triceps. Context hard.
+
+    // Back
+    'pull up': 'Back',
+    'chin up': 'Back',
+    'lat pulldown': 'Back',
+    'row': 'Back', // Catch-all for dumbbell row, cable row, barbell row
+    'deadlift': 'Back',
+    'face pull': 'Back',
+    'hyper extension': 'Back',
+    'good morning': 'Back',
+
+    // Shoulders
     'overhead press': 'Shoulders',
     'military press': 'Shoulders',
+    'shoulder press': 'Shoulders',
     'lateral raise': 'Shoulders',
-    'tricep extension': 'Triceps',
-    'skull crusher': 'Triceps',
-    'dips': 'Triceps',
+    'front raise': 'Shoulders',
+    'rear delt': 'Shoulders',
+    'arnold press': 'Shoulders',
+    'shrug': 'Shoulders',
+    'upright row': 'Shoulders',
 
-    // Pull (Back/Biceps)
-    'pull up': 'Back',
-    'dumbbell row': 'Back',
-    'lat pulldown': 'Back',
-    'deadlift': 'Back',
-    'bicep curl': 'Biceps',
-    'hammer curl': 'Biceps',
-    'face pull': 'Back',
-
-    // Legs
-    'squat': 'Legs',
+    // Legs (Quads/Hams/Glutes/Calves)
+    'squat': 'Legs', // Front, back, goblet
     'leg press': 'Legs',
-    'lunges': 'Legs',
+    'lunge': 'Legs',
+    'step up': 'Legs',
     'leg extension': 'Legs',
-    'hamstring curl': 'Legs',
-    'calf raises': 'Legs',
-    'goblet squat': 'Legs',
-    'romanian deadlift': 'Legs',
+    'leg curl': 'Legs',
+    'hamstring': 'Legs',
+    'calf': 'Legs',
+    'hip thrust': 'Legs',
+    'glute': 'Legs',
+    'bulgarian': 'Legs', // split squats
+    'hack squat': 'Legs',
+    'rdl': 'Legs', // Romanian Deadlift
+
+    // Biceps
+    'curl': 'Biceps', // Barbell, dumbbell, hammer, preacher
+
+    // Triceps
+    'tricep': 'Triceps',
+    'skull crusher': 'Triceps',
+    'close grip bench': 'Triceps',
+    'pushdown': 'Triceps',
+    'kickback': 'Triceps',
 
     // Core
     'plank': 'Core',
-    'crunches': 'Core',
-    'leg raise': 'Core'
+    'crunch': 'Core',
+    'sit up': 'Core',
+    'leg raise': 'Core',
+    'russian twist': 'Core',
+    'ab wheel': 'Core',
+    'mountain climber': 'Core',
+
+    // Cardio
+    'run': 'Cardio',
+    'treadmill': 'Cardio',
+    'cycle': 'Cardio',
+    'bike': 'Cardio',
+    'elliptical': 'Cardio',
+    'rowing': 'Cardio'
 };
 
-const CALORIES_PER_SET = 8; // Rough estimate per hard set
-const BASE_CALORIES_PER_SESSION = 50; // Warmup + metabolic baseline
+const CALORIES_PER_SET = 8;
+const BASE_CALORIES_PER_SESSION = 50;
 
 export const getMuscleGroup = (exerciseName) => {
     const normalized = exerciseName.toLowerCase();
-    for (const [key, value] of Object.entries(EXERCISE_Categories)) {
-        if (normalized.includes(key)) return value;
+
+    // Sort keys by length descending to match specific terms first 
+    // (e.g. 'chest press' before 'press' if we had a generic press)
+    const keys = Object.keys(EXERCISE_Categories).sort((a, b) => b.length - a.length);
+
+    for (const key of keys) {
+        if (normalized.includes(key)) return EXERCISE_Categories[key];
     }
     return 'Other';
 };
