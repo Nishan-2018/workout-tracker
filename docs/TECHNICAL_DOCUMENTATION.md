@@ -21,7 +21,19 @@ The core philosophy of the application is **"Offline-First, Cloud-Synced"**. Use
 
 ---
 
-## 3. System Design & Architecture
+## 3. Security Architecture
+**IronTrack** implements a defense-in-depth strategy:
+
+### Firestore Security
+- **Owner-Only Access**: Strict RLS (Row Level Security) ensuring users can only read/write their own data path (`/users/{uid}`).
+- **Recursive Protection**: Rules explicitly cover all subcollections (`healthMetrics`, `sessions`), preventing unauthorized access bypass.
+
+### Hosting Security
+- **Headers**: Production-grade HTTP headers (`HSTS`, `Content-Security-Policy`, `X-Frame-Options`) are injected via `firebase.json` to mitigate XSS and Clickjacking.
+
+---
+
+## 4. System Design & Architecture
 
 The application uses a **Hybrid Sync Architecture**.
 

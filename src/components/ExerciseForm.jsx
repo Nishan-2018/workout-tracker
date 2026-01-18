@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { getExercisePRs } from '../utils/storage';
 
 export default function ExerciseForm({ onAddExercise, initialExercise = null, onCancel }) {
     const [name, setName] = useState('');
@@ -8,54 +7,30 @@ export default function ExerciseForm({ onAddExercise, initialExercise = null, on
         { reps: '', weight: '' },
         { reps: '', weight: '' }
     ]);
-    const [prs, setPrs] = useState([
-        { reps: '', weight: '' },
-        { reps: '', weight: '' },
-        { reps: '', weight: '' }
-    ]);
 
     useEffect(() => {
         if (initialExercise) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setName(initialExercise.name);
             if (initialExercise.sets && initialExercise.sets.length > 0) {
                 setSets(initialExercise.sets);
             }
-        } else {
-            // Check for draft if not editing a specific exercise
-            const draft = localStorage.getItem('exercise_form_draft');
-            if (draft) {
-                try {
-                    const { name: draftName, sets: draftSets } = JSON.parse(draft);
-                    setName(draftName || '');
-                    if (draftSets) setSets(draftSets);
-                } catch (e) { console.error("Error loading draft", e); }
-            }
         }
     }, [initialExercise]);
-
-    // Save draft whenever name or sets change
-    useEffect(() => {
-        if (!initialExercise) {
-            localStorage.setItem('exercise_form_draft', JSON.stringify({ name, sets }));
-        }
-    }, [name, sets, initialExercise]);
-
-    useEffect(() => {
-        if (name) {
-            const historicalBest = getExercisePRs(name);
-            setPrs(historicalBest);
-        } else {
-            setPrs([
-                { reps: '', weight: '' },
-                { reps: '', weight: '' },
-                { reps: '', weight: '' }
-            ]);
-        }
-    }, [name]);
 
     const handleSetChange = (index, field, value) => {
         const newSets = [...sets];
         newSets[index][field] = value;
+        setSets(newSets);
+    };
+
+    const addSet = () => {
+        setSets([...sets, { reps: '', weight: '' }]);
+    };
+
+    const removeSet = (index) => {
+        if (sets.length <= 1) return;
+        const newSets = sets.filter((_, i) => i !== index);
         setSets(newSets);
     };
 
@@ -73,7 +48,6 @@ export default function ExerciseForm({ onAddExercise, initialExercise = null, on
 
         // Reset only if not editing a specific planned one (because that closes the form usually)
         if (!initialExercise) {
-            localStorage.removeItem('exercise_form_draft');
             setName('');
             setSets([
                 { reps: '', weight: '' },
@@ -103,28 +77,60 @@ export default function ExerciseForm({ onAddExercise, initialExercise = null, on
 
                 <div style={{ display: 'grid', gap: '1rem' }}>
                     {sets.map((set, i) => (
-                        <div key={i} style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                            <span style={{ color: 'var(--text-secondary)', width: '50px', fontWeight: '600' }}>Set {i + 1}</span>
+                        <div key={i} style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                            <span style={{ color: 'var(--text-secondary)', width: '45px', fontWeight: '600', fontSize: '0.85rem' }}>Set {i + 1}</span>
                             <div style={{ flex: 1 }}>
                                 <input
                                     type="number"
-                                    placeholder={prs[i].reps ? `Best: ${prs[i].reps}` : "Reps"}
+                                    placeholder="Reps"
                                     value={set.reps}
                                     onChange={(e) => handleSetChange(i, 'reps', e.target.value)}
-                                    style={{ padding: '0.5rem' }}
+                                    style={{ padding: '0.5rem', width: '100%' }}
                                 />
                             </div>
                             <div style={{ flex: 1 }}>
                                 <input
                                     type="number"
-                                    placeholder={prs[i].weight ? `Best: ${prs[i].weight}` : "Weight (kg)"}
+                                    placeholder="Weight (kg)"
                                     value={set.weight}
                                     onChange={(e) => handleSetChange(i, 'weight', e.target.value)}
-                                    style={{ padding: '0.5rem' }}
+                                    style={{ padding: '0.5rem', width: '100%' }}
                                 />
                             </div>
+                            <button
+                                type="button"
+                                onClick={() => removeSet(i)}
+                                style={{
+                                    background: 'transparent',
+                                    color: '#ef4444',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    padding: '0.5rem',
+                                    fontSize: '1.2rem',
+                                    display: sets.length > 1 ? 'block' : 'none'
+                                }}
+                                title="Remove Set"
+                            >
+                                ✕
+                            </button>
                         </div>
                     ))}
+                    <button
+                        type="button"
+                        onClick={addSet}
+                        className="btn-secondary"
+                        style={{
+                            marginTop: '0.5rem',
+                            padding: '0.4rem',
+                            fontSize: '0.85rem',
+                            background: 'var(--surface-color)',
+                            border: '1px dashed var(--primary-color)',
+                            width: '100%',
+                            color: 'var(--primary-color)'
+                        }}
+                    >
+                        + Add Set
+                    </button>
                 </div>
 
                 <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>

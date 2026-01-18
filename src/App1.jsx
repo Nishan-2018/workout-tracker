@@ -133,26 +133,6 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const moveExercise = (id, direction) => {
-    if (!currentSession) return;
-    const index = currentSession.exercises.findIndex(e => e.id === id);
-    if (index === -1) return;
-
-    const newExercises = [...currentSession.exercises];
-    if (direction === 'up' && index > 0) {
-      [newExercises[index], newExercises[index - 1]] = [newExercises[index - 1], newExercises[index]];
-    } else if (direction === 'down' && index < newExercises.length - 1) {
-      [newExercises[index], newExercises[index + 1]] = [newExercises[index + 1], newExercises[index]];
-    } else {
-      return; // No movement possible
-    }
-
-    const updatedSession = { ...currentSession, exercises: newExercises };
-    const updatedSessions = saveSession(updatedSession, user?.uid);
-    setSessions(updatedSessions);
-    setCurrentSession(updatedSession);
-  };
-
   return (
     <div className="app-container" style={{ padding: '0 1rem 4rem 1rem' }}>
 
@@ -298,23 +278,7 @@ function App() {
                   <div key={ex.id} className="glass-panel" style={{ padding: '1rem', borderLeft: ex.isCompleted ? '4px solid var(--secondary-color)' : '4px solid var(--text-secondary)', opacity: ex.isCompleted ? 1 : 0.8 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
                       <div style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>{ex.name}</div>
-                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginRight: '0.25rem' }}>
-                          <button
-                            onClick={() => moveExercise(ex.id, 'up')}
-                            style={{ background: 'var(--surface-color)', color: 'white', padding: '0px 6px', borderRadius: '4px', fontSize: '0.7rem', border: '1px solid var(--border-color)', height: '18px' }}
-                            title="Move Up"
-                          >
-                            ▲
-                          </button>
-                          <button
-                            onClick={() => moveExercise(ex.id, 'down')}
-                            style={{ background: 'var(--surface-color)', color: 'white', padding: '0px 6px', borderRadius: '4px', fontSize: '0.7rem', border: '1px solid var(--border-color)', height: '18px' }}
-                            title="Move Down"
-                          >
-                            ▼
-                          </button>
-                        </div>
+                      <div style={{ display: 'flex', gap: '0.5rem' }}>
                         <button
                           onClick={() => setEditingExerciseId(ex.id)}
                           style={{ background: 'var(--surface-color)', color: 'white', padding: '0.25rem 0.75rem', borderRadius: '4px', fontSize: '0.8rem', border: '1px solid var(--border-color)' }}
@@ -348,14 +312,17 @@ function App() {
           </div>
         )}
 
-        <SessionHistory 
-          sessions={sessions.filter(s => s.id !== currentSession?.id)} 
+        <SessionHistory
+          sessions={sessions.filter(s => s.id !== currentSession?.id)}
           onDeleteSession={handleDeleteSession}
-          onEditSession={handleEditSession} />
+          onEditSession={handleEditSession}
+        />
 
-          <HealthTracking user={user} />
 
-          <WorkoutCategories />
+
+        <HealthTracking user={user} />
+
+        <WorkoutCategories />
 
       </main>
     </div>
